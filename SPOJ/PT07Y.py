@@ -1,30 +1,23 @@
-def recursive_dfs(graph, start, path=[]):
-  '''recursive depth first search from start'''
-  path=path+[start]
-  for node in graph[start]:
-    if not node in path:
-        path=recursive_dfs(graph, node, path)
-  return path
+def dfs(current):
+  visited[current] = 1
+  ret = 1
+  for child in graph[current]:
+    if not visited[child]:
+      ret += dfs(child)
+  return ret
 
-#graph = {'A':['B','C'],'B':['A'],'C':['A']}
-#print 'recursive dfs ', recursive_dfs(graph, 'A')
-
-graph = {}
 N, M = map(int, raw_input().split())
+graph = [[] for i in xrange(N)]
+visited = [0 for i in xrange(N)]
 for _ in range(M):
     a, b = map(int, raw_input().split())
-    if a in graph.keys():
-        graph[a].add(b)
-    else:
-        graph[a] = set()
-        graph[a].add(b)
-    if b not in graph.keys():
-        graph[b] = set()
+    graph[a-1].append(b-1)
+    graph[b-1].append(a-1)
 
 if N != M + 1:
     print "NO"
 else:
-    if len(recursive_dfs(graph, graph.keys()[0])) == N:
+    if dfs(0) == N:
         print "YES"
     else:
         print "NO"
