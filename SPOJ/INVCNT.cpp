@@ -1,4 +1,4 @@
-#include<iostream>
+#include <iostream>
 using namespace std;
 
 long long int merge(long long int arr[],long long int temp[],long long int left,long long int mid,long long int right){

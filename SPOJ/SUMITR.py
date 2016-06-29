@@ -1,9 +1,8 @@
-for _ in range(input()):
-	tri = []
-	for _ in range(input()):
-		tri.append(map(int,raw_input().split()))
-	[[tri[0][0]  for i in range(n + 1)] for j in range(n)]
-	# new[0][1] = tri[0][0]
-	# new = [[(tri[l][k] + max(new[l-1][k + 1],new[l-1][k])) for k in range(1,l + 1)] for l in range(1,n)]
-	# print new
-	print tri
+for _ in xrange(input()):
+	r = input()
+	t = [[0]*(r+1) for i in xrange(row+1)]
+	for i in xrange(r):
+		c = map(int,raw_input().split())
+		for j in xrange(i+1):
+			t[i+1][j+1] = c[j] + max(t[i][j],t[i][j+1])
+	print max(t[r])

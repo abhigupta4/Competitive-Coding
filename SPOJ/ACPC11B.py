@@ -9,4 +9,3 @@ for _ in range(input()):
 			if temp < min:
 				min = temp
 	print min
-	

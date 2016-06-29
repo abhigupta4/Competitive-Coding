@@ -1,69 +1,67 @@
-#include <iostream>
-#include <map>
-#include <utility>
+//AC
+#include <bits/stdc++.h>
+#define mp make_pair
+#define pb push_back
+#define max1 183*183
 
 using namespace std;
 
-class Graph
-{
-    int V;    // No. of vertices
-    list<pair<int,int>> *adj;    // Pointer to an array containing adjacency lists
-public:
-    Graph(int V);  // Constructor
-    void addEdge(pair<int,int>> v, pair<int,int>> w); // function to add an edge to graph
-    void BFS(pair<int,int>> s);  // prints BFS traversal from a given source s
-};
- 
-Graph::Graph(int V)
-{
-    this->V = V;
-    adj = new list<pair<int,int>>[V];
-}
- 
-void Graph::addEdge(pair<int,int>> v, pair<int,int>> w)
-{
-    adj[v].push_back(w); // Add w to v’s list.
-}
- 
-void Graph::BFS(int s)
-{
-    // Mark all the vertices as not visited
-    bool *visited = new bool[V];
-    for(int i = 0; i < V; i++)
-        visited[i] = false;
- 
-    // Create a queue for BFS
-    list<int> queue;
- 
-    // Mark the current node as visited and enqueue it
-    visited[s] = true;
-    queue.push_back(s);
- 
-    // 'i' will be used to get all adjacent vertices of a vertex
-    list<int>::iterator i;
- 
-    while(!queue.empty())
-    {
-        // Dequeue a vertex from queue and print it
-        s = queue.front();
-        cout << s << " ";
-        queue.pop_front();
- 
-        // Get all adjacent vertices of the dequeued vertex s
-        // If a adjacent has not been visited, then mark it visited
-        // and enqueue it
-        for(i = adj[s].begin(); i != adj[s].end(); ++i)
-        {
-            if(!visited[*i])
-            {
-                visited[*i] = true;
-                queue.push_back(*i);
+int main(){
+    int T,n,m,row,col,so_r,so_c,temp;
+    char color;
+    scanf("%d",&T);
+    for(int t=0;t<T;t++){
+        scanf("%d %d",&n,&m);
+        char bitmap[n][m];
+        int ans[n][m];
+        int visited[n][m];
+        queue<pair<int,int> > q;
+        for(row=0;row<n;row++){
+            for(col=0;col<m;col++){
+                scanf(" %c",&color);
+                bitmap[row][col] = color;
+                ans[row][col] = max1;
+                visited[row][col] = 0;
+                if(color == '1'){
+                    q.push(mp(row,col));
+                    ans[row][col] = 0;
+                    visited[row][col] = 1;
+                }
             }
         }
+        while(!q.empty()){
+            pair<int,int> node = q.front();
+            q.pop();
+            row = node.first;
+            col = node.second;
+            temp = ans[row][col];
+            if (row > 0 and visited[row-1][col] != 1){
+                q.push(mp(row-1,col));
+                ans[row-1][col] = temp+1;
+                visited[row-1][col] = 1;
+            }
+            if(row < n-1 and visited[row+1][col] != 1){
+                q.push(mp(row+1,col));
+                ans[row+1][col] = temp+1;
+                visited[row+1][col] = 1;
+            }
+            if(col > 0 and visited[row][col-1] != 1){
+                q.push(mp(row,col-1));
+                ans[row][col-1] = temp+1;
+                visited[row][col-1] = 1;
+            }
+            if(col<m-1 and visited[row][col+1] != 1){
+                q.push(mp(row,col+1));
+                ans[row][col+1] = temp+1;
+                visited[row][col+1] = 1;
+            }
+        }
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                printf("%d ",ans[i][j]);
+            }
+            printf("\n");
+        }
     }
-}
-
-int main(){
-
-	return 0;
+    return 0;
 }
