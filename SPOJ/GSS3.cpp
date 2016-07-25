@@ -1,5 +1,4 @@
 #include <bits/stdc++.h>
-#include <stdio.h>
  
 using namespace std;
  
@@ -46,6 +45,7 @@ node query(vector<node> &tree,int index, int start, int end, int l, int r)
     node left = query(tree,2*index+1, start, mid, l, r);
     node right = query(tree,2*index+2, mid+1, end, l, r);
     node temp;
+    
     temp.tot = left.tot + right.tot;
     temp.lmax = max(left.lmax,left.tot + right.lmax);
     temp.rmax = max(right.rmax,right.tot + left.rmax);

@@ -7,13 +7,18 @@ for _ in xrange(N):
 	wt.append(w)
 	val.append(v)
 
-ans = [[0]*(S+1) for i in xrange(N+1)]
+flag = 0
+
+ans = [[0]*(S+1) for i in xrange(2)]
+
+# ans = [[0]*(S+1) for i in xrange(N+1)]
 
 for i in xrange(N):
 	for j in xrange(1,S+1):
 		if wt[i] > j:
-			ans[i+1][j] = ans[i][j]
+			ans[not flag][j] = ans[flag][j]
 		else:
-			ans[i+1][j] = max(val[i] + ans[i][j-wt[i]],ans[i][j])
+			ans[not flag][j] = max(val[i] + ans[flag][j-wt[i]],ans[flag][j])
+	flag = not flag
 
-print ans[N][S]
+print ans[flag][S]

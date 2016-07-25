@@ -1,54 +1,98 @@
 #include <bits/stdc++.h>
+
+#define ll long long
+#define sc(t)  scanf("%d",&t)
+#define mp   make_pair
+#define pb   push_back
+#define F    first
+#define S   second
+
 using namespace std;
 
-int max1,n_c,n_r;
+int R, C, ans, len;
+char grid[1001][1001];
+int visited[1001][1001];
+int dist[1001][1001];
+int dr[4] = {0, 0, 1,-1};
+int dc[4] = {1,-1, 0, 0};
 
-void dfs(int s_r,int s_c,int R,int C,int depth,int p_r,int p_c,char arr[][]){
-	if(depth > max1){
-		n_c = s_c;
-		n_r = s_r;
-		max1 = depth;
-	}
-	if(s_r+1 <R and s_r+1 != p_r){
-		if(arr[s_r+1][s_c] == '.'){
-			dfs(s_r+1,s_c,R,C,depth+1,s_r,s_c,arr[][]);
-		}
-	}
-	if(s_r-1>=0 and s_r-1 != p_r){
-		if(arr[s_r-1][s_c] == '.'){
-			dfs(s_r-1,s_c,R,C,depth+1,s_r,s_c,arr[][]);
-		}	
-	}
-	if(s_c+1 < C and s_c+1 != p_c){
-		if(arr[s_r][s_c+1] == '.'){
-			dfs(s_r,s_c+1,R,C,depth+1,s_r,s_c,arr[][]);
-		}	
-	}
-	if(s_c-1 >= 0 and s_c-1 != p_c){
-		if(arr[s_r][s_c-1] == '.'){
-			dfs(s_r,s_c-1,R,C,depth+1,s_r,s_c,arr[][]);
-		}	
-	}
+pair<int,int> diameterEnd;
+
+bool inGrid(pair<int,int>& g)
+{
+    return (g.F>=0 && g.F<R && g.S>=0 && g.S<C);
 }
 
-int main(){
-	int test,C,R,s_c,s_r;
-	scanf("%d",&test);
-	for(int t=0;t<test;t++){
-		scanf("%d %d",&C,&R);
-		char arr[R][C];
-		for(int r=0;r<R;r++){
-			for(int c=0;c<C;c++){
-				scanf("%c",&char[r][c]);
-				if (char[r][c] == '.'){
-					s_r = r;
-					s_c = c;
-				} 
-			}
-		}
-		max1 = 0;
-		dfs(s_r,s_c,R,C,0,-1,-1);
-		printf("%d %d %d",n_c,n_r,max1);
-	}
-	return 0;
+void bfs(pair<int,int> start)
+{
+    queue<pair<int,int> > q;
+    q.push(start);
+    while(!q.empty())
+    {
+        pair<int,int> cur = q.front(),next;
+        q.pop();
+        for(int i=0;i<4;i++)
+        {
+            next.F = cur.F + dr[i];
+            next.S = cur.S + dc[i];
+            if(inGrid(next))
+            {
+                if(grid[next.F][next.S] == '.' && !visited[next.F][next.S])
+                {
+                    visited[next.F][next.S] = 1;
+                    dist[next.F][next.S] =  dist[cur.F][cur.S] + 1;
+                    if(dist[next.F][next.S]>len)
+                    {
+                        len = dist[next.F][next.S];
+                        diameterEnd = next;
+                    }
+                    q.push(next);
+                }
+
+            }
+        }
+
+    }
+}
+
+int main()
+{
+    int t,i,j,present;
+    sc(t);
+    while(t--)
+    {
+        len = 0;
+        present = 0;
+        pair<int,int>  St;
+        sc(C);
+        sc(R);
+        memset(visited,0,sizeof visited);
+        for(i=0;i<R;i++)
+        {
+            scanf("%s",grid[i]);
+        }
+        
+        for(i=0;i<R;i++)
+        {
+            for(j=0;j<C;j++)
+            {
+                if(grid[i][j] == '.')
+                {
+                    St = mp(i,j);
+                    dist[i][j] = 0;
+                    present = 1;
+                    break;
+                }
+            }
+            if(present)
+                break;
+        }
+        bfs(St);
+        memset(visited,0,sizeof visited);
+        dist[diameterEnd.F][diameterEnd.S] = 0;
+        len = 0;
+        bfs(diameterEnd);
+        printf("Maximum rope length is %d.\n",len);
+    }
+    return 0;
 }

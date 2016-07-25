@@ -38,5 +38,3 @@ int main() {
 	cout << profit(0,N - 1);
 	return 0;
 }
-
-#DONE
