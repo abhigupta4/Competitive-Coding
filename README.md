@@ -1,2 +1,2 @@
 # Competitive-Coding
-These consists of the problems I have solved on various websites for competetive programming.
+I have added codes for the online coding contests that I have participated in. There are also codes written by me for problems on various sites.
