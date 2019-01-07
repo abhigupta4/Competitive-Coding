@@ -1,3 +1,5 @@
+#Output q lines, each line containing the maximum possible weight of the match for given query, else -1, in case no valid result is obtained.
+
 class TrieNode():
 	def __init__(self):
 		self.children = [None]*26
